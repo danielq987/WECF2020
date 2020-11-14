@@ -1,0 +1,2 @@
+# WECF2020
+WEC F2020 Solutions
