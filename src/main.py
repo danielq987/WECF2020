@@ -153,7 +153,33 @@ def main():
                 #check if robot is done and if past robots are also done
                 done = done and (r.status == "complete")
 
+    
 
+    # output shit
+    final_output = {}
+    tempList = []
+    for i in robot_array:
+        tempList.append([i.name, [i.base_y - 1, i.base_x - 1]])
+    final_output["robots"] = tempList
+
+    tempList = []
+    
+    index = 0;
+    count = 0;
+    while True:
+        for i in robot_array:
+            try:
+                tempList.append(i.history[index])
+                count = 0
+            except:
+                count++
+        if count > len(robot_array):
+            break
+        index++
+
+    final_output["actions"] = tempList
+    with open('output.json') as f:
+        f.write(json.dumps(final_output))
 
     # dump final output
     final_output = json.dumps(m.history)

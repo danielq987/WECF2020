@@ -26,7 +26,7 @@ class Robot:
         self.pos_y = row
         
     def save_move(self, move_x, move_y):
-        self.history.append([self.name, "move", [move_x,move_y]])
+        self.history.append([self.name, "move", [move_y - 1, move_x - 1]])
 
     def save_clean(self, fluid_used):
         self.history.append([self.name, "clean",fluid_used])
@@ -100,7 +100,6 @@ class Robot:
             if manhattan_dist(i, (self.base_y, self.base_x)) <= self.og_fuel_cap // 2:
                 flag = True
         return flag
-
 
     def do_move(self, mov_x, mov_y):
         #Save move to history
