@@ -19,6 +19,16 @@ class Map:
       tempList[i] = l 
     self.contamination = tempList
   
+  def is_valid_square(self, row, col):
+    """
+    Determines whether or not a robot can be at a certain location
+    """
+    if (row == 0 or row == self.rows - 1) or (col == 0 or col == self.columns - 1):
+      if self.contamination[row][col] != 'B':
+        return False
+
+    return True
+
   def add_base(self, coords):
     """
     Adds a base at the given coordinates

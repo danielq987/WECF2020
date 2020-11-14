@@ -26,10 +26,13 @@ class Robot:
         self.pos_y = row
         
     def save_move(self):
-        self.history.append([self.name, "move", [self.pos_x - 1,self.pos_y - 1]])
+        self.history.append([self.name, "move", [self.pos_y - 1,self.pos_x - 1]])
 
     def save_clean(self, fluid_used):
-        self.history.append([self.name, "clean",fluid_used])
+        self.history.append([self.name, "clean", fluid_used])
+    
+    def save_resupply(self):
+        self.history.append([self.name, "resupply"])
 
     def find_move_vector(self):
         """
@@ -40,7 +43,7 @@ class Robot:
         disty = self.route_y - self.pos_y
         return (distx, disty)
 
-    def find_next_move(self):
+    def find_next_move(self, m):
         """
         Using current coordinates and final coordinates, find the next move to make (x,y)
         """
@@ -50,9 +53,10 @@ class Robot:
         #If moving in the x direction is still required
         if(distx != 0):
             mov_x = int(distx/abs(distx))
-            return (mov_x, 0)
+            if m.is_valid_square(self.pos_y, self.pos_x + mov_x):
+                return (mov_x, 0)
         #If moving in the y direction is still required
-        elif(disty != 0):
+        if(disty != 0):
             mov_y = int(disty/abs(disty))
             return (0, mov_y)
         #If no more movement is required

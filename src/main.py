@@ -142,6 +142,7 @@ def main():
         count += 1
 
     done = False
+    iteration = 0
     # MAIN LOOP
     while(not done):
         #Loop through each robot
@@ -173,7 +174,7 @@ def main():
                 # when the robot has been assigned to go back to base (for whatever reason)
                 elif r.status == "to_base":
                     #Check what the next required move is
-                    n_x, n_y = r.find_next_move()
+                    n_x, n_y = r.find_next_move(m)
 
                     # robot is at the destination of the route planned
                     if(n_x == 0 and n_y == 0):
@@ -181,6 +182,8 @@ def main():
                         r.fuel_cap = fuel_capacity
                         r.clean_cap = clean_capacity
                         r.status = "none"
+                        r.save_resupply()
+
                     else:
                         r.pos_x += n_x
                         r.pos_y += n_y
@@ -196,9 +199,11 @@ def main():
                     # set status to clean as its next move
                     if(n_x == 0 and n_y == 0):
                         r.status = "clean"
-                        #TODO: execute cleaning routine
+
                         # > find amount to clean in map
-                        r.clean_cap -= m.clean_tile(r.pos_y, r.pos_x, r.clean_cap)
+                        clean_amount = m.clean_tile(r.pos_y, r.pos_x, r.clean_cap)
+                        r.clean_cap -= clean_amount
+                        r.save_clean(clean_amount)
                         # more fluid than needed to clean
                         if(r.clean_cap > 0):
                             # since cleaned, check for new assignment
@@ -217,7 +222,7 @@ def main():
                     #No issues encountered
                     else:
                         #find the next move and move there
-                        n_x, n_y = r.find_next_move()
+                        n_x, n_y = r.find_next_move(m)
                         r.pos_x += n_x
                         r.pos_y += n_y
                         r.fuel_cap -= 1
@@ -226,6 +231,7 @@ def main():
             else:
                 #check if robot is done and if past robots are also done
                 done = done and (r.status == "complete")
+        iteration += 1
 
     
 
