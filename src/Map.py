@@ -5,10 +5,27 @@ class Map:
     height = map height, or number of rows
     contamination is a 2-D list of contamination values
     """
-    self.height = height 
-    self.length = length
-    self.contamination = contamination
+    self.height = height + 2
+    self.length = length + 2
+    tempList = contamination
+    tempList.insert(0, [0] * length)
+    tempList.append([0] * length)
+    for i in range(len(tempList)):
+      l = tempList[i]
+      l.insert(0, 0)
+      l.append(0)
+      tempList[i] = l 
+    self.contamination = tempList
   
+  def add_base(self, row, col):
+    """
+    Adds a base at the given coordinates
+    """
+    if (col != 0 and col != (self.length - 1)) and (row != 0 and row != (self.height - 1)):
+      raise ValueError(f"Cannot place a base at {row}, {col}")
+    self.contamination[row][col] = 'B'
+    return None
+
   def remaining_contamination(self):
     """
     Print the sum of all remaining contamination values
@@ -31,6 +48,7 @@ def main():
   contam = [[50, 55, 100], [1, 2, 3]]
   map1 = Map(1, 2, contam)
   print(map1.remaining_contamination())
+  map1.add_base(1,1)
   print(map1)
   
 if __name__ == "__main__":
