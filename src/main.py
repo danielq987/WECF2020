@@ -186,7 +186,7 @@ def main():
         index += 1
 
     final_output["actions"] = tempList
-    with open('output.json') as f:
+    with open('output.json', 'w') as f:
         f.write(json.dumps(final_output))
 
     # dump final output
