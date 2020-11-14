@@ -79,6 +79,7 @@ class Robot:
                     # TODO - set status?
                     self.route_x = i[1]
                     self.route_y = i[0]
+                    r.status = "to_contamination"
 
         if minimum_dist == 999999:
             self.status = "to_base"
@@ -88,15 +89,17 @@ class Robot:
         else:
             return True
 
-    def no_contaminated_spots_left(self, map_obj):
+    def is_contaminated_spots_left(self, map_obj):
+        """ 
+        Returns True if there are spots left
+        """
         remaining = map_obj.remaining_tiles() # remaining tiles
-        minimum_dist = 999999
         print(remaining)
-        flag = True
+        flag = False
         # iterates over uncleaned tiles
         for i in remaining:
             if manhattan_dist(i, (self.base_y, self.base_x)) <= self.og_fuel_cap // 2:
-                flag = False
+                flag = True
         return flag
 
 

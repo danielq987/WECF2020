@@ -79,14 +79,12 @@ def main():
 
                 # when the robot has no assigned duty/status
                 if r.status == "none":
-                    #find the nearest destination to clean up
-                    #PLACEHOLDERS
-                    next_x = 10
-                    next_y = 10
-                    no_contimated_spots_left = False
 
+                    # check if any contaminated (reachable) spots are left
+                    is_contaminated_spots_left = r.is_contaminated_spots_left(m)
+                    
                     #check if no next, and current is base
-                    if(no_contimated_spots_left):
+                    if (not is_contaminated_spots_left):
                         if(r.pos_x == r.base_x and r.pos_y == r.base_y):
                             #Robot is done!
                             r.status = "complete"
@@ -95,10 +93,7 @@ def main():
                             r.route_y = r.base_y
                             r.status = "to_base"
                     else:
-                        # Set new route destination to this
-                        r.route_x = next_x
-                        r.route_y = next_y
-                        r.status = "to_contamination"
+                        r.find_goal(m)
                         #TODO: execute move toward base routine
                         
 
