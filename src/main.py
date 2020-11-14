@@ -181,10 +181,10 @@ def main():
                 tempList.append(i.history[index])
                 count = 0
             except:
-                count++
+                count += 1
         if count > len(robot_array):
             break
-        index++
+        index += 1
 
     final_output["actions"] = tempList
     with open('output.json') as f:
