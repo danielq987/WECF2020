@@ -8,7 +8,6 @@ class Robot:
         self.pos_y = position_y
         self.base_x = base_x
         self.base_y = base_y
-        self.on_route = on_route
         self.history = [[name, [base_x,base_y]]] # Holds history of moves
         self.route_x = route_x
         self.route_y = route_y
@@ -35,7 +34,7 @@ class Robot:
         Using current coordinates and final coordinates, find the next move to make (x,y)
         """
 
-        mov_x, mov_y = find_move_vector()
+        distx, disty = find_move_vector()
         #If moving in the x direction is still required
         if(distx != 0):
             mov_x = distx/abs(distx)
@@ -56,7 +55,7 @@ class Robot:
         """
         Save the fluid change amount used
         """
-        self.fuel_cap -= fluid_to_use
+        self.clean_cap -= fluid_to_use
         self.save_clean(fluid_to_use)
 
 
