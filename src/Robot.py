@@ -1,6 +1,6 @@
 class Robot:
     
-    def __init__(self, name, fuel_capacity, clean_capacity, position_x, position_y, base_x, base_y, route_x, route_y, on_route):
+    def __init__(self, name, fuel_capacity, clean_capacity, position_x=0, position_y=0, base_x=0, base_y=0, route_x=0, route_y=0, status="none"):
         self.fuel_cap = fuel_capacity
         self.clean_cap = clean_capacity
         self.pos_x = position_x
@@ -18,11 +18,11 @@ class Robot:
 
     def save_clean(self, fluid_used):
         self.history.append([self.name, "clean",fluid_used])
-        pass
+
 
     def find_next_move(self):
         """
-        Using current coordinates and final coordinates, find the next move to make (x,y), and save move
+        Using current coordinates and final coordinates, find the next move to make (x,y)
         """
 
         #Calculate the distance vector
@@ -40,9 +40,11 @@ class Robot:
         else:
             pass
 
-        #Save move to history and return move
-        self.save_move(mov_x,mov_y)
         return (mov_x,mov_y)
+
+    def do_move(self, mov_x, mov_y):
+        #Save move to history
+        self.save_move(mov_x,mov_y)
 
     def use_fluid(self, fluid_to_use):
         """
