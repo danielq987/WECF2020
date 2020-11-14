@@ -56,16 +56,16 @@ def main():
 
     m = Map(tile_rows)
 
-    get_number_of_bases(m, fuel_capacity)
-    print(m)
+    num_bases = get_number_of_bases(m, fuel_capacity)
+    
 
     """
     MAIN LOOP STUFF
     """
-    r1 = Robot(fuel_capacity, clean_capacity)
-    r2 = Robot(fuel_capacity, clean_capacity)
-    r3 = Robot(fuel_capacity, clean_capacity)
-    r4 = Robot(fuel_capacity, clean_capacity)
+    robot_array = []
+
+    for i in range(num_bases):
+        r = Robot(fuel_capacity, clean_capacity)
     robot_array = [r1, r2, r3, r4]
     done = False
 
