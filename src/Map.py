@@ -44,6 +44,20 @@ class Map:
           remaining.append((i, j))
     return remaining
   
+  def clean_tile(self, row, col, fluid_remaining):
+    """
+    Cleans the (row, col) tile.
+    Takes remaining robot_fluid and returns the robot fluid 
+    """
+    if fluid_remaining == 0:
+      return None
+    contam_value = self.contamination[row][col];
+    if fluid_remaining >= contam_value:
+      self.contamination[row][col] = 0
+    else:
+      self.contamination[row][col] -= fluid_remaining    
+
+
   def __str__(self):
     """
     Returns the 2-D array for printing purposes
@@ -62,7 +76,7 @@ def main():
   print(map1.rows)
   print(map1.columns)
   print(map1.remaining_contamination())
-  map1.add_base(1,0)
+  map1.add_base(3, 3)
   print(map1.remaining_tiles())
   print(map1)
   
