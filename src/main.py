@@ -57,7 +57,7 @@ def main():
                         else:
                             r.route_x = r.base_x
                             r.route_y = r.base_y
-                            r.status("to_base")
+                            r.status = "to_base"
                     else:
                         # Set new route destination to this
                         r.route_x = next_x
@@ -81,7 +81,7 @@ def main():
             
                 else:
                     #Check what the next required move is
-                    n_x, n_y = r.find_next_move()
+                    n_x, n_y = r.find_move_vector()
 
                     # robot is at the destination of the route planned
                     # set status to clean as its next move
@@ -89,18 +89,19 @@ def main():
                         r.status = "clean"
 
                     # robot cannot reach the destination as it will run out of fuel
-                    elif(n_x > r.fuel_cap or n_y > r.fuel_cap):
+                    elif(n_x >= r.fuel_cap or n_y >= r.fuel_cap):
                         # set status to base as its next move
                         r.status = "to_base"
                         #TODO: make the first move towards base
 
                     #No issues encountered
                     else:
-                        #TODO: make the next move that is required
-                        # make the next move that is required
-                        pass
+                        n_x, n_y = r.find_next_move()
+                        r.x_pos += n_x
+                        r.y_pos += n_y
             else:
                 done = done and (r.status == "complete")
+
 
 
 

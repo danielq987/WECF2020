@@ -19,17 +19,21 @@ class Robot:
     def save_clean(self, fluid_used):
         self.history.append([self.name, "clean",fluid_used])
 
+    def find_move_vector(self):
+        """
+        Using current coordinates and final coordinates, find the vector between them (x,y)
+        """
+        #Calculate the distance vector
+        distx = self.route_x - self.pos_x
+        disty = self.route_y - self.pos_y
+        return (distx, disty)
 
     def find_next_move(self):
         """
         Using current coordinates and final coordinates, find the next move to make (x,y)
         """
 
-        #Calculate the distance vector
-        distx = self.route_x - self.pos_x
-        disty = self.route_y - self.pos_y
-        mov_x = 0
-        mov_y = 0
+        mov_x, mov_y = find_move_vector()
         #If moving in the x direction is still required
         if(distx != 0):
             mov_x = distx/abs(distx)
