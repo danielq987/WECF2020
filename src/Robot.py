@@ -1,6 +1,7 @@
 class Robot:
     
     def __init__(self, name, fuel_capacity, clean_capacity, position_x=0, position_y=0, base_x=0, base_y=0, route_x=0, route_y=0, status="none"):
+        self.name = name
         self.fuel_cap = fuel_capacity
         self.clean_cap = clean_capacity
         self.pos_x = position_x
@@ -11,6 +12,7 @@ class Robot:
         self.history = [[name, [base_x,base_y]]] # Holds history of moves
         self.route_x = route_x
         self.route_y = route_y
+        self.status = status
 
         
     def save_move(self, move_x, move_y):
