@@ -78,7 +78,6 @@ def main():
         #Loop through each robot
         done = True
         for r in robot_array:
-
             if(r.status != "complete"):
 
                 # when the robot has no assigned duty/status
@@ -165,7 +164,9 @@ def main():
 
 
     # dump final output
-    final_output = json.dumps(m.history)
+    #final_output = json.dumps(m.history)
+    for i in robot_array:
+        print(i.history)
 
 if __name__ == "__main__":
     main()

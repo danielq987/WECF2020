@@ -79,7 +79,7 @@ class Robot:
                     # TODO - set status?
                     self.route_x = i[1]
                     self.route_y = i[0]
-                    r.status = "to_contamination"
+                    self.status = "to_contamination"
 
         if minimum_dist == 999999:
             self.status = "to_base"
