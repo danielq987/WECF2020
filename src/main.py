@@ -2,23 +2,21 @@ from Map import Map
 from Robot import Robot
 import json
 
+def numBases(m, fuel_cap):
+    rows = m.rows
+    cols = m.cols
+
+    print(rows, cols)
+
+
 def main():
     """
     Initialize Map and Robot from file input converted to ints
     """
 
-    
     case1 = open("../test_cases/case1.txt")
-    clean_capacity = case1.read()
-    fuel_capacity = case1.read()
 
-    r = Robot(fuel_capacity, clean_capacity)
-    case1 = open("../test_cases/case1.txt")
     clean_capacity, fuel_capacity = [int(e) for e in case1.readline().split()]
-
-    rows = case1.read()
-    cols = case1.read()
-    m = Map(rows, cols)
     r = Robot(fuel_capacity, clean_capacity)
 
     rows, cols = [int(e) for e in case1.readline().split()]
@@ -34,13 +32,13 @@ def main():
     r3 = Robot(fuel_capacity, clean_capacity)
     r4 = Robot(fuel_capacity, clean_capacity)
     robot_array = [r1, r2, r3, r4]
-    done = False    
+    done = False
 
     # MAIN LOOP
     while(not done):
         #Loop through each robot
         for r in robot_array:
-            
+
             if(r.status != "complete"):
                 if r.status == "none":
                     #find the nearest destination to clean up
@@ -62,7 +60,7 @@ def main():
                         # Set new route destination to this
                         r.route_x = next_x
                         r.route_y = next_y
-                        
+
                         #Check what the next required move is
                         n_x, n_y = r.find_next_move()
 
@@ -78,7 +76,7 @@ def main():
                         r.fuel_cap = fuel_capacity
                         r.clean_cap = clean_capacity
                         r.status = "none"
-            
+
                 else:
                     #Check what the next required move is
                     n_x, n_y = r.find_move_vector()
@@ -101,14 +99,6 @@ def main():
                         r.y_pos += n_y
             else:
                 done = done and (r.status == "complete")
-
-
-
-
-
-
-
-
 
 
 
