@@ -33,6 +33,8 @@ def get_number_of_bases(m, fuel_cap):
         if cols_needed + 1 > cols_added:
             m.add_base(0, cols + 1)
 
+    return number_of_bases
+
 
 def main():
     """
@@ -48,7 +50,6 @@ def main():
     tile_rows = [case1.readline().split() for row in range(rows)]
 
     m = Map(tile_rows)
-    get_number_of_bases(m, fuel_capacity)
 
     """
     MAIN LOOP STUFF
