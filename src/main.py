@@ -50,13 +50,18 @@ def main():
     Converts file input to ints, and then intiliazes Map and Robots
     """
 
-    case1 = open("../test_cases/case1.txt")
+    case1 = open("C:/Github/WECF2020/test_cases/case1.txt")
 
     clean_capacity, fuel_capacity = [int(e) for e in case1.readline().split()]
     # r = Robot(fuel_capacity, clean_capacity)
 
-    rows, cols = [int(e) for e in case1.readline().split()]
-    tile_rows = [case1.readline().split() for row in range(rows)]
+    tile_rows = []
+    case1.readline()
+    while True:
+        line = case1.readline()
+        if len(line) == 0:
+            break
+        tile_rows.append([int(i) for i in line.split()])
 
     m = Map(tile_rows)
 
@@ -130,18 +135,13 @@ def main():
                         r.status = "clean"
                         #TODO: execute cleaning routine
                         # > find amount to clean in map
-
-                        amount_to_clean = 43 #PLACE HOLDER
+                        r.clean_cap -= m.clean_tile(r.pos_y, r.pos_x, r.clean_cap)
                         # more fluid than needed to clean
-                        if(r.clean_cap > amount_to_clean):
-                            r.use_fluid(amount_to_clean)
-                            #TODO: SUBTRACT AMOUNT FROM MAP
+                        if(r.clean_cap > 0):
                             # since cleaned, check for new assignment
                             r.status = "none"
                         # less than or equal amount of fluid needed to clean
-                        elif(r.clean_cap <= amount_to_clean):
-                            r.use_fluid(r.clean_cap)
-                            #TODO: SUBTRACT AMOUNT FROM MAP
+                        else:
                             #Since fluid is empty, must return to base
                             r.status = "to_base" 
 

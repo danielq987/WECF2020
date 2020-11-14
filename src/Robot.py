@@ -14,7 +14,7 @@ class Robot:
         self.pos_y = position_y
         self.base_x = base_x
         self.base_y = base_y
-        self.history = [[name, [base_x,base_y]]] # Holds history of moves
+        self.history = [] # Holds history of moves
         self.route_x = route_x
         self.route_y = route_y
         self.status = status
@@ -49,15 +49,15 @@ class Robot:
         distx, disty = self.find_move_vector()
         #If moving in the x direction is still required
         if(distx != 0):
-            mov_x = distx/abs(distx)
+            mov_x = int(distx/abs(distx))
+            return (mov_x, 0)
         #If moving in the y direction is still required
         elif(disty != 0):
-            mov_y = disty/abs(disty)
+            mov_y = int(disty/abs(disty))
+            return (0, mov_y)
         #If no more movement is required
         else:
-            pass
-
-        return (mov_x,mov_y)
+            return (0, 0)
 
 
     def find_goal(self, map_obj):
@@ -134,7 +134,7 @@ def main():
     print(repr(r1))
     r1.find_goal(map1)
     print(map1)
-    print(r1.no_contaminated_spots_left(map1))
+    print(r1.is_contaminated_spots_left(map1))
 if __name__ == "__main__":
   main()
 
