@@ -44,7 +44,7 @@ class Robot:
         Using current coordinates and final coordinates, find the next move to make (x,y)
         """
 
-        distx, movy = find_move_vector()
+        distx, disty = find_move_vector()
         #If moving in the x direction is still required
         if(distx != 0):
             mov_x = distx/abs(distx)
