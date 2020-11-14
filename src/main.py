@@ -28,7 +28,7 @@ def get_number_of_bases(m, fuel_cap):
 
     for row in range(1, rows + 1, row_spacing * 2):
         m.add_base(row + row_spacing - 1, 0)
-        bases_array.append(row + row_spacing - 1, 0)
+        bases_array.append((row + row_spacing - 1, 0))
 
     number_of_bases = rows_needed + cols_needed + 1
 
@@ -36,11 +36,11 @@ def get_number_of_bases(m, fuel_cap):
     if number_of_bases > 1:
         for col in range(1, cols + 1, col_spacing * 2):
             m.add_base(0, col + col_spacing - 1)
-            bases_array.append(0, col + col_spacing - 1)
+            bases_array.append((0, col + col_spacing - 1))
             cols_added += 1
         if cols_needed + 1 > cols_added:
             m.add_base(0, cols + 1)
-            bases_array.append(0, col + col_spacing - 1)
+            bases_array.append((0, col + col_spacing - 1))
 
     return number_of_bases, bases_array
 
