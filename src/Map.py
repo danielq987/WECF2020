@@ -19,13 +19,13 @@ class Map:
       tempList[i] = l 
     self.contamination = tempList
   
-  def add_base(self, row, col):
+  def add_base(self, coords):
     """
     Adds a base at the given coordinates
     """
-    if (col != 0 and col != (self.columns - 1)) and (row != 0 and row != (self.rows - 1)):
-      raise ValueError(f"Cannot place a base at {row}, {col}")
-    self.contamination[row][col] = 'B'
+    if (coords[1] != 0 and coords[1] != (self.columns - 1)) and (coords[0] != 0 and coords[0] != (self.rows - 1)):
+      raise ValueError(f"Cannot place a base at {coords[0]}, {coords[1]}")
+    self.contamination[coords[0]][coords[1]] = 'B'
     return None
 
   # def remaining_contamination(self):

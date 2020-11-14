@@ -13,34 +13,95 @@ def get_number_of_bases(m, fuel_cap):
     cols = m.columns - 2
     bases_array = []
 
-    area_of_effect = fuel_cap - 1
+    area_of_effect = (fuel_cap // 2) * 2 - 1
 
-    rows_needed = rows // area_of_effect
-    cols_needed = cols // area_of_effect
+    # if area of effect is large in comparison to the map
+    if (area_of_effect / 2 + 1) >= min(rows, cols):
+        count = 1
+        flip = True
+        # if cols > rows, flat
+        if cols > rows:
+            while count < (cols + 1):
+                if flip:
+                    base = (0, count)
+                    bases_array.append(base)
+                    m.add_base(base)
+                else:
+                    base = (rows + 1, count)
+                    bases_array.append(base)
+                    m.add_base(base)
+                flip = not flip
+                count += (area_of_effect // 2 + 1)
 
-    row_spacing = math.ceil(rows / 2)
-    col_spacing = math.ceil(cols / 2)
+        # if rows > cols, tall
+        else:
+            while count < (rows + 1):
+                if flip:
+                    base = (count, 0)
+                    bases_array.append(base)
+                    m.add_base(base)
+                else:
+                    base = (count, cols + 1)
+                    bases_array.append(base)
+                    m.add_base(base)
+                flip = not flip
+                count += (area_of_effect // 2 + 1)
 
-    if rows_needed != 0:
-        row_spacing = math.ceil(rows / (rows_needed + 1))
-    if cols_needed != 0:
-        col_spacing = math.ceil(cols / (cols_needed + 1))
+    # if the aoe is small in comparison to the map
+    else:
+        remaining_space = min(rows, cols) - area_of_effect 
+        number_of_bases = math.ceil(max(rows, cols)/(area_of_effect/2)) + round(remaining_space/area_of_effect) * (remaining_space >= 0)
+        count = 1
+        
+        # add bases horizontally
+        while True:
+            try:
+                base = (0, count)
+                bases_array.append(base)
+                m.add_base(base)
+                base = (rows + 1, count + (area_of_effect // 4))
+                bases_array.append(base)
+                m.add_base(base)
+                count += area_of_effect // 2
+            except:
+                break
 
-    for row in range(1, rows + 1, row_spacing * 2):
-        m.add_base(row + row_spacing - 1, 0)
-        bases_array.append((row + row_spacing - 1, 0))
+        # add bases vertically
+        count = area_of_effect // 2
+        while count < (rows - area_of_effect // 2):
+            base = (count, 0)
+            bases_array.append(base)
+            m.add_base(base)
+            base = (cols + 1, count)
+            bases_array.append(base)
+            m.add_base(base)
 
-    number_of_bases = rows_needed + cols_needed + 1
+    # rows_needed = rows // area_of_effect
+    # cols_needed = cols // area_of_effect
 
-    cols_added = 0
-    if number_of_bases > 1:
-        for col in range(1, cols + 1, col_spacing * 2):
-            m.add_base(0, col + col_spacing - 1)
-            bases_array.append((0, col + col_spacing - 1))
-            cols_added += 1
-        if cols_needed + 1 > cols_added:
-            m.add_base(0, cols + 1)
-            bases_array.append((0, col + col_spacing - 1))
+    # row_spacing = math.ceil(rows / 2)
+    # col_spacing = math.ceil(cols / 2)
+
+    # if rows_needed != 0:
+    #     row_spacing = math.ceil(rows / (rows_needed + 1))
+    # if cols_needed != 0:
+    #     col_spacing = math.ceil(cols / (cols_needed + 1))
+
+    # for row in range(1, rows + 1, row_spacing * 2):
+    #     m.add_base(row + row_spacing - 1, 0)
+    #     bases_array.append((row + row_spacing - 1, 0))
+
+    # number_of_bases = rows_needed + cols_needed + 1
+
+    # cols_added = 0
+    # if number_of_bases > 1:
+    #     for col in range(1, cols + 1, col_spacing * 2):
+    #         m.add_base(0, col + col_spacing - 1)
+    #         bases_array.append((0, col + col_spacing - 1))
+    #         cols_added += 1
+    #     if cols_needed + 1 > cols_added:
+    #         m.add_base(0, cols + 1)
+    #         bases_array.append((0, col + col_spacing - 1))
 
     return bases_array
 
@@ -65,16 +126,18 @@ def main():
 
     m = Map(tile_rows)
 
-    num_bases = get_number_of_bases(m, fuel_capacity)
+    bases = get_number_of_bases(m, fuel_capacity)
     
 
     """
     MAIN LOOP STUFF
     """
     robot_array = []
-    count = 0
-    for i in num_bases:
-        r = Robot(count, fuel_capacity, clean_capacity, i[1], i[0], i[1], i[0], i[1], i[0], "none")
+    
+    # 65 corresponds to the ascii character A
+    count = 65
+    for i in bases:
+        r = Robot(chr(count), fuel_capacity, clean_capacity, i[1], i[0], i[1], i[0], i[1], i[0], "none")
         robot_array.append(r)
         count += 1
 
