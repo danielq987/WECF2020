@@ -63,9 +63,12 @@ def main():
     # MAIN LOOP
     while(not done):
         #Loop through each robot
+        done = True
         for r in robot_array:
 
             if(r.status != "complete"):
+
+                # when the robot has no assigned duty/status
                 if r.status == "none":
                     #find the nearest destination to clean up
                     #PLACEHOLDERS
@@ -81,17 +84,16 @@ def main():
                         else:
                             r.route_x = r.base_x
                             r.route_y = r.base_y
-                            r.status("to_base")
+                            r.status = "to_base"
                     else:
                         # Set new route destination to this
                         r.route_x = next_x
                         r.route_y = next_y
+                        r.status = "to_contamination"
+                        #TODO: execute move toward base routine
+                        
 
-                        #Check what the next required move is
-                        n_x, n_y = r.find_next_move()
-
-                        #TODO: Make the next required move
-
+                # when the robot has been assigned to go back to base (for whatever reason)
                 elif r.status == "to_base":
                     #Check what the next required move is
                     n_x, n_y = r.find_next_move()
@@ -102,32 +104,57 @@ def main():
                         r.fuel_cap = fuel_capacity
                         r.clean_cap = clean_capacity
                         r.status = "none"
+                    else:
+                        r.x_pos += n_x
+                        r.y_pos += n_y
+                        r.fuel_cap -= 1
 
-                else:
+                # when the robot has been assigned to go to a contamination site
+                elif (r.status == "to_contamination"):
                     #Check what the next required move is
-                    n_x, n_y = r.find_next_move()
+                    n_x, n_y = r.find_move_vector()
 
                     # robot is at the destination of the route planned
                     # set status to clean as its next move
                     if(n_x == 0 and n_y == 0):
                         r.status = "clean"
+                        #TODO: execute cleaning routine
+                        # > find amount to clean in map
+
+                        amount_to_clean = 43 #PLACE HOLDER
+                        # more fluid than needed to clean
+                        if(r.clean_cap > amount_to_clean):
+                            use_fluid(amount_to_clean)
+                            #TODO: SUBTRACT AMOUNT FROM MAP
+                            # since cleaned, check for new assignment
+                            r.status = "none"
+                        # less than or equal amount of fluid needed to clean
+                        elif(r.clean_cap <= amount_to_clean):
+                            use_fluid(r.clean_cap)
+                            #TODO: SUBTRACT AMOUNT FROM MAP
+                            #Since fluid is empty, must return to base
+                            r.status = "to_base" 
 
                     # robot cannot reach the destination as it will run out of fuel
-                    elif(n_x > r.fuel_cap or n_y > r.fuel_cap):
+                    elif(n_x >= r.fuel_cap or n_y >= r.fuel_cap):
                         # set status to base as its next move
                         r.status = "to_base"
-                        #TODO: make the first move towards base
+                        #TODO: execute move toward base routine
 
                     #No issues encountered
                     else:
-                        #TODO: make the next move that is required
-                        # make the next move that is required
-                        pass
+                        #find the next move and move there
+                        n_x, n_y = r.find_next_move()
+                        r.x_pos += n_x
+                        r.y_pos += n_y
+                        r.fuel_cap -= 1
             else:
+                #check if robot is done and if past robots are also done
                 done = done and (r.status == "complete")
 
 
 
+    # dump final output
     final_output = json.dumps(m.history)
 
 if __name__ == "__main__":

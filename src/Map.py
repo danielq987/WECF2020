@@ -28,11 +28,11 @@ class Map:
     self.contamination[row][col] = 'B'
     return None
 
-  def remaining_contamination(self):
-    """
-    Print the sum of all remaining contamination values
-    """
-    return sum([sum(i) for i in self.contamination])
+  # def remaining_contamination(self):
+  #   """
+  #   Print the sum of all remaining contamination values
+  #   """
+  #   return sum([sum(i) for i in self.contamination])
   
   def remaining_tiles(self):
     """
@@ -43,22 +43,24 @@ class Map:
     for i in range(1, self.rows - 1):
       for j in range(1, self.columns - 1):
         if self.contamination[i][j] != 0:
-          remaining.append((i, j))
+          remaining.append((i, j)) # row, column
     return remaining
   
   def clean_tile(self, row, col, fluid_remaining):
     """
     Cleans the (row, col) tile.
     Takes fluid_remaining from the robot, and updates the contamination values accordingly
+    Returns the amount of fluid used
     """
     if fluid_remaining == 0:
-      return None
+      return 0
     contam_value = self.contamination[row][col];
     if fluid_remaining >= contam_value:
       self.contamination[row][col] = 0
+      return contam_value
     else:
-      self.contamination[row][col] -= fluid_remaining    
-
+      self.contamination[row][col] -= fluid_remaining
+      return fluid_remaining
 
   def __str__(self):
     """
