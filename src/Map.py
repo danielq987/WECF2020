@@ -7,6 +7,8 @@ class Map:
     """
     self.rows = len(contamination) + 2
     self.columns = len(contamination[0]) + 2
+
+    # everything below this line surrounds the 2-D array with a border of 0's for the bases
     tempList = contamination
     tempList.insert(0, [0] * (self.columns - 2))
     tempList.append([0] * (self.columns - 2))
@@ -47,7 +49,7 @@ class Map:
   def clean_tile(self, row, col, fluid_remaining):
     """
     Cleans the (row, col) tile.
-    Takes remaining robot_fluid and returns the robot fluid 
+    Takes fluid_remaining from the robot, and updates the contamination values accordingly
     """
     if fluid_remaining == 0:
       return None
