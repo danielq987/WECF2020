@@ -12,6 +12,14 @@ class Robot:
         self.route_x = route_x
         self.route_y = route_y
 
+        
+    def save_move(self, move_x, move_y):
+        self.history.append([self.name, "move", [move_x,move_y]])
+
+    def save_clean(self, fluid_used):
+        self.history.append([self.name, "clean",fluid_used])
+        pass
+
     def find_next_move(self):
         """
         Using current coordinates and final coordinates, find the next move to make (x,y), and save move
@@ -36,12 +44,11 @@ class Robot:
         self.save_move(mov_x,mov_y)
         return (mov_x,mov_y)
 
-    
-    def save_move(self, move_x, move_y):
-        self.history.append([self.name, [move_x,move_y]])
+    def use_fluid(self, fluid_required):
+        """
+        Save the fluid change amount
+        """
 
-    def save_clean(self):
-        pass
 
 
         
