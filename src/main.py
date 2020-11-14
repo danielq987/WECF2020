@@ -1,28 +1,54 @@
 from Map import Map
 from Robot import Robot
 import json
+import math
 
-def numBases(m, fuel_cap):
-    rows = m.rows
-    cols = m.cols
+def get_number_of_bases(m, fuel_cap):
+    rows = m.rows - 2
+    cols = m.columns - 2
 
-    print(rows, cols)
+    area_of_effect = fuel_cap - 1
+
+    rows_needed = rows // area_of_effect
+    cols_needed = cols // area_of_effect
+
+    row_spacing = math.ceil(rows / 2)
+    col_spacing = math.ceil(cols / 2)
+
+    if rows_needed != 0:
+        row_spacing = math.ceil(rows / (rows_needed + 1))
+    if cols_needed != 0:
+        col_spacing = math.ceil(cols / (cols_needed + 1))
+
+    for row in range(1, rows + 1, row_spacing * 2):
+        m.add_base(row + row_spacing - 1, 0)
+
+    number_of_bases = rows_needed + cols_needed + 1
+
+    cols_added = 0
+    if number_of_bases > 1:
+        for col in range(1, cols + 1, col_spacing * 2):
+            m.add_base(0, col + col_spacing - 1)
+            cols_added += 1
+        if cols_needed + 1 > cols_added:
+            m.add_base(0, cols + 1)
 
 
 def main():
     """
-    Initialize Map and Robot from file input converted to ints
+    Converts file input to ints, and then intiliazes Map and Robots
     """
 
-    case1 = open("../test_cases/case1.txt")
+    case1 = open("../test_cases/case4.txt")
 
     clean_capacity, fuel_capacity = [int(e) for e in case1.readline().split()]
-    r = Robot(fuel_capacity, clean_capacity)
+    # r = Robot(fuel_capacity, clean_capacity)
 
     rows, cols = [int(e) for e in case1.readline().split()]
     tile_rows = [case1.readline().split() for row in range(rows)]
 
     m = Map(tile_rows)
+    get_number_of_bases(m, fuel_capacity)
 
     """
     MAIN LOOP STUFF
