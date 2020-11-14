@@ -4,8 +4,14 @@ import json
 import math
 
 def get_number_of_bases(m, fuel_cap):
+    """
+    :param m: map object to be modified
+    :param fuel_cap: max distance that can be traveled from the base
+    :return: number of bases needed and adds bases to map object
+    """
     rows = m.rows - 2
     cols = m.columns - 2
+    bases_array = []
 
     area_of_effect = fuel_cap - 1
 
@@ -22,6 +28,7 @@ def get_number_of_bases(m, fuel_cap):
 
     for row in range(1, rows + 1, row_spacing * 2):
         m.add_base(row + row_spacing - 1, 0)
+        bases_array.append((row + row_spacing - 1, 0))
 
     number_of_bases = rows_needed + cols_needed + 1
 
@@ -29,11 +36,13 @@ def get_number_of_bases(m, fuel_cap):
     if number_of_bases > 1:
         for col in range(1, cols + 1, col_spacing * 2):
             m.add_base(0, col + col_spacing - 1)
+            bases_array.append((0, col + col_spacing - 1))
             cols_added += 1
         if cols_needed + 1 > cols_added:
             m.add_base(0, cols + 1)
+            bases_array.append((0, col + col_spacing - 1))
 
-    return number_of_bases
+    return bases_array
 
 
 def main():
@@ -41,7 +50,7 @@ def main():
     Converts file input to ints, and then intiliazes Map and Robots
     """
 
-    case1 = open("../test_cases/case4.txt")
+    case1 = open("../test_cases/case1.txt")
 
     clean_capacity, fuel_capacity = [int(e) for e in case1.readline().split()]
     # r = Robot(fuel_capacity, clean_capacity)
@@ -51,16 +60,19 @@ def main():
 
     m = Map(tile_rows)
 
+    num_bases = get_number_of_bases(m, fuel_capacity)
+    
+
     """
     MAIN LOOP STUFF
     """
-    r1 = Robot(fuel_capacity, clean_capacity)
-    r2 = Robot(fuel_capacity, clean_capacity)
-    r3 = Robot(fuel_capacity, clean_capacity)
-    r4 = Robot(fuel_capacity, clean_capacity)
-    robot_array = [r1, r2, r3, r4]
-    done = False
+    robot_array = []
 
+    for i in num_bases:
+        r = Robot(i, fuel_capacity, clean_capacity, i[1], i[0], i[1], i[0], i[1], i[0], "none")
+        robot_array.append(r)
+
+    done = False
     # MAIN LOOP
     while(not done):
         #Loop through each robot
@@ -71,14 +83,12 @@ def main():
 
                 # when the robot has no assigned duty/status
                 if r.status == "none":
-                    #find the nearest destination to clean up
-                    #PLACEHOLDERS
-                    next_x = 10
-                    next_y = 10
-                    no_contimated_spots_left = False
 
+                    # check if any contaminated (reachable) spots are left
+                    is_contaminated_spots_left = r.is_contaminated_spots_left(m)
+                    
                     #check if no next, and current is base
-                    if(no_contimated_spots_left):
+                    if (not is_contaminated_spots_left):
                         if(r.pos_x == r.base_x and r.pos_y == r.base_y):
                             #Robot is done!
                             r.status = "complete"
@@ -87,10 +97,7 @@ def main():
                             r.route_y = r.base_y
                             r.status = "to_base"
                     else:
-                        # Set new route destination to this
-                        r.route_x = next_x
-                        r.route_y = next_y
-                        r.status = "to_contamination"
+                        r.find_goal(m)
                         #TODO: execute move toward base routine
                         
 
@@ -106,9 +113,10 @@ def main():
                         r.clean_cap = clean_capacity
                         r.status = "none"
                     else:
-                        r.x_pos += n_x
-                        r.y_pos += n_y
+                        r.pos_x += n_x
+                        r.pos_y += n_y
                         r.fuel_cap -= 1
+                        r.save_move()
 
                 # when the robot has been assigned to go to a contamination site
                 elif (r.status == "to_contamination"):
@@ -146,9 +154,10 @@ def main():
                     else:
                         #find the next move and move there
                         n_x, n_y = r.find_next_move()
-                        r.x_pos += n_x
-                        r.y_pos += n_y
+                        r.pos_x += n_x
+                        r.pos_y += n_y
                         r.fuel_cap -= 1
+                        r.save_move()
             else:
                 #check if robot is done and if past robots are also done
                 done = done and (r.status == "complete")
