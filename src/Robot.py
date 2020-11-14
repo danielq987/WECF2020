@@ -7,4 +7,3 @@ class Robot:
 
 x = Robot(10, 15)
 
-print(x.clean_cap)
