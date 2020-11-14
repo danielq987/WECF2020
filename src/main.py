@@ -4,6 +4,11 @@ import json
 import math
 
 def get_number_of_bases(m, fuel_cap):
+    """
+    :param m: map object to be modified
+    :param fuel_cap: max distance that can be traveled from the base
+    :return: number of bases needed and adds bases to map object
+    """
     rows = m.rows - 2
     cols = m.columns - 2
 
@@ -41,7 +46,7 @@ def main():
     Converts file input to ints, and then intiliazes Map and Robots
     """
 
-    case1 = open("../test_cases/case4.txt")
+    case1 = open("../test_cases/case1.txt")
 
     clean_capacity, fuel_capacity = [int(e) for e in case1.readline().split()]
     # r = Robot(fuel_capacity, clean_capacity)
@@ -50,6 +55,9 @@ def main():
     tile_rows = [case1.readline().split() for row in range(rows)]
 
     m = Map(tile_rows)
+
+    get_number_of_bases(m, fuel_capacity)
+    print(m)
 
     """
     MAIN LOOP STUFF
