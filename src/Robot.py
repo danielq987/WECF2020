@@ -12,9 +12,38 @@ class Robot:
         self.route_x = route_x
         self.route_y = route_y
 
-    def find_next_move(map_array):
-        i = pos_x
-        j = pos_y
+    def find_next_move(self):
+        """
+        Using current coordinates and final coordinates, find the next move to make (x,y), and save move
+        """
+
+        #Calculate the distance vector
+        distx = self.route_x - self.pos_x
+        disty = self.route_y - self.pos_y
+        mov_x = 0
+        mov_y = 0
+        #If moving in the x direction is still required
+        if(distx != 0):
+            mov_x = distx/abs(distx)
+        #If moving in the y direction is still required
+        elif(disty != 0):
+            mov_y = disty/abs(disty)
+        #If no more movement is required
+        else:
+            pass
+
+        #Save move to history and return move
+        self.save_move(mov_x,mov_y)
+        return (mov_x,mov_y)
+
+    
+    def save_move(self, move_x, move_y):
+        self.history.append([self.name, [move_x,move_y]])
+
+    def save_clean(self):
+        pass
+
+
         
         #Loop through list of possible next locations
         # -plan of attack array
