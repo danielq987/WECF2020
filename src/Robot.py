@@ -25,8 +25,8 @@ class Robot:
         self.base_y = row
         self.pos_y = row
         
-    def save_move(self, move_x, move_y):
-        self.history.append([self.name, "move", [move_x,move_y]])
+    def save_move(self):
+        self.history.append([self.name, "move", [self.pos_x,self.pos_y]])
 
     def save_clean(self, fluid_used):
         self.history.append([self.name, "clean",fluid_used])
@@ -102,10 +102,6 @@ class Robot:
                 flag = True
         return flag
 
-
-    def do_move(self, mov_x, mov_y):
-        #Save move to history
-        self.save_move(mov_x,mov_y)
 
     def use_fluid(self, fluid_to_use):
         """

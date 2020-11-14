@@ -113,9 +113,10 @@ def main():
                         r.clean_cap = clean_capacity
                         r.status = "none"
                     else:
-                        r.x_pos += n_x
-                        r.y_pos += n_y
+                        r.pos_x += n_x
+                        r.pos_y += n_y
                         r.fuel_cap -= 1
+                        r.save_move()
 
                 # when the robot has been assigned to go to a contamination site
                 elif (r.status == "to_contamination"):
@@ -153,9 +154,10 @@ def main():
                     else:
                         #find the next move and move there
                         n_x, n_y = r.find_next_move()
-                        r.x_pos += n_x
-                        r.y_pos += n_y
+                        r.pos_x += n_x
+                        r.pos_y += n_y
                         r.fuel_cap -= 1
+                        r.save_move()
             else:
                 #check if robot is done and if past robots are also done
                 done = done and (r.status == "complete")
