@@ -67,7 +67,6 @@ class Robot:
         """
         remaining = map_obj.remaining_tiles() # remaining tiles
         minimum_dist = 999999
-        print(remaining)
 
         # iterates over uncleaned tiles
         for i in remaining:
@@ -94,7 +93,6 @@ class Robot:
         Returns True if there are spots left
         """
         remaining = map_obj.remaining_tiles() # remaining tiles
-        print(remaining)
         flag = False
         # iterates over uncleaned tiles
         for i in remaining:

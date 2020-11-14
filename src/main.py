@@ -67,10 +67,11 @@ def main():
     MAIN LOOP STUFF
     """
     robot_array = []
-
+    count = 0
     for i in num_bases:
-        r = Robot(i, fuel_capacity, clean_capacity, i[1], i[0], i[1], i[0], i[1], i[0], "none")
+        r = Robot(count, fuel_capacity, clean_capacity, i[1], i[0], i[1], i[0], i[1], i[0], "none")
         robot_array.append(r)
+        count += 1
 
     done = False
     # MAIN LOOP
