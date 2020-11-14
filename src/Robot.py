@@ -26,7 +26,7 @@ class Robot:
         self.pos_y = row
         
     def save_move(self):
-        self.history.append([self.name, "move", [self.pos_x,self.pos_y]])
+        self.history.append([self.name, "move", [self.pos_x - 1,self.pos_y - 1]])
 
     def save_clean(self, fluid_used):
         self.history.append([self.name, "clean",fluid_used])
