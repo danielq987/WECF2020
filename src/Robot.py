@@ -7,6 +7,7 @@ class Robot:
     
     def __init__(self, name, fuel_capacity, clean_capacity, position_x=0, position_y=0, base_x=0, base_y=0, route_x=0, route_y=0, status="none"):
         self.name = name
+        self.og_fuel_cap = fuel_capacity
         self.fuel_cap = fuel_capacity
         self.clean_cap = clean_capacity
         self.pos_x = base_x
@@ -59,10 +60,16 @@ class Robot:
 
 
     def find_goal(self, map_obj):
-        lis = map_obj.contamination # 2d list representing the map
+        """
+        Updates route_x and route_y to the goal tile -> either the base or the closest uncleaned tile
+        Returns True if its a tile
+        Returns False if its not a tile  
+        """
         remaining = map_obj.remaining_tiles() # remaining tiles
         minimum_dist = 999999
         print(remaining)
+
+        # iterates over uncleaned tiles
         for i in remaining:
             dist_to_goal = manhattan_dist(i, (self.pos_y, self.pos_x))
             dist_goal_to_base = manhattan_dist(i, (self.base_y, self.base_x))
@@ -77,6 +84,20 @@ class Robot:
             self.status = "to_base"
             self.route_x = self.base_x
             self.route_y = self.base_y
+            return False
+        else:
+            return True
+
+    def no_contaminated_spots_left(self, map_obj):
+        remaining = map_obj.remaining_tiles() # remaining tiles
+        minimum_dist = 999999
+        print(remaining)
+        flag = True
+        # iterates over uncleaned tiles
+        for i in remaining:
+            if manhattan_dist(i, (self.base_y, self.base_x)) <= self.og_fuel_cap // 2:
+                flag = False
+        return flag
 
 
     def do_move(self, mov_x, mov_y):
@@ -106,7 +127,7 @@ class Robot:
         return string
 
 def main():
-    contam = [[50, 55, 0], [1, 2, 3]]
+    contam = [[0, 5, 0], [1, 2, 3]]
     map1 = Map(contam)
     r1 = Robot("bob", 3, 300)
     r1.set_base(0, 2)
@@ -115,7 +136,7 @@ def main():
     print(repr(r1))
     r1.find_goal(map1)
     print(map1)
-  
+    print(r1.no_contaminated_spots_left(map1))
 if __name__ == "__main__":
   main()
 
