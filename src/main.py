@@ -98,13 +98,13 @@ def main():
                         amount_to_clean = 43 #PLACE HOLDER
                         # more fluid than needed to clean
                         if(r.clean_cap > amount_to_clean):
-                            use_fluid(amount_to_clean)
+                            r.use_fluid(amount_to_clean)
                             #TODO: SUBTRACT AMOUNT FROM MAP
                             # since cleaned, check for new assignment
                             r.status = "none"
                         # less than or equal amount of fluid needed to clean
                         elif(r.clean_cap <= amount_to_clean):
-                            use_fluid(r.clean_cap)
+                            r.use_fluid(r.clean_cap)
                             #TODO: SUBTRACT AMOUNT FROM MAP
                             #Since fluid is empty, must return to base
                             r.status = "to_base" 
