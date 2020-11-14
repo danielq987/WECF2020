@@ -43,7 +43,7 @@ class Map:
     for i in range(1, self.rows - 1):
       for j in range(1, self.columns - 1):
         if self.contamination[i][j] != 0:
-          remaining.append((i, j))
+          remaining.append((i, j)) # row, column
     return remaining
   
   def clean_tile(self, row, col, fluid_remaining):
@@ -61,8 +61,6 @@ class Map:
     else:
       self.contamination[row][col] -= fluid_remaining
       return fluid_remaining
-
-
 
   def __str__(self):
     """
