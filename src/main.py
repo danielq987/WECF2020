@@ -79,6 +79,7 @@ def main():
         #Loop through each robot
         done = True
         for r in robot_array:
+            
             if(r.status != "complete"):
 
                 # when the robot has no assigned duty/status
@@ -158,6 +159,7 @@ def main():
                         r.pos_y += n_y
                         r.fuel_cap -= 1
                         r.save_move()
+                done = False
             else:
                 #check if robot is done and if past robots are also done
                 done = done and (r.status == "complete")
