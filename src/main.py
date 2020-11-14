@@ -42,7 +42,7 @@ def get_number_of_bases(m, fuel_cap):
             m.add_base(0, cols + 1)
             bases_array.append(0, col + col_spacing - 1)
 
-    return number_of_bases, bases_array
+    return bases_array
 
 
 def main():
@@ -68,11 +68,11 @@ def main():
     """
     robot_array = []
 
-    for i in range(num_bases):
+    for i in num_bases:
         r = Robot(fuel_capacity, clean_capacity)
-    robot_array = [r1, r2, r3, r4]
-    done = False
+        robot_array.append(r)
 
+    done = False
     # MAIN LOOP
     while(not done):
         #Loop through each robot
