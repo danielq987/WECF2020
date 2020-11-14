@@ -44,10 +44,13 @@ class Robot:
         self.save_move(mov_x,mov_y)
         return (mov_x,mov_y)
 
-    def use_fluid(self, fluid_required):
+    def use_fluid(self, fluid_to_use):
         """
-        Save the fluid change amount
+        Save the fluid change amount used
         """
+        self.fuel_cap -= fluid_to_use
+        self.save_clean(fluid_to_use)
+
 
 
 
