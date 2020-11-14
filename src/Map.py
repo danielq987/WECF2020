@@ -16,6 +16,9 @@ class Map:
     return sum([sum(i) for i in self.contamination])
   
   def __str__(self):
+    """
+    Returns the 2-D array for printing purposes
+    """
     string = ""
     for i in self.contamination:
       for j in i:
