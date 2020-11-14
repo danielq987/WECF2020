@@ -1,5 +1,6 @@
 from Map import Map
 from Robot import Robot
+import json
 
 def main():
     case1 = open("../test_cases/case1.txt")  # open test cases and reads values
@@ -26,6 +27,8 @@ def main():
     a = Map(rows, cols, tile_rows)
 
     print(a)
+
+    final_output = json.dumps(a.history)
 
 if __name__ == "__main__":
     main()
