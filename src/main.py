@@ -69,7 +69,7 @@ def main():
     robot_array = []
 
     for i in num_bases:
-        r = Robot(fuel_capacity, clean_capacity)
+        r = Robot(i, fuel_capacity, clean_capacity, i[1], i[0], i[1], i[0], i[1], i[0], "none")
         robot_array.append(r)
 
     done = False
