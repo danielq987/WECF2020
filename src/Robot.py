@@ -78,7 +78,7 @@ class Robot:
             dist_to_goal = manhattan_dist(i, (self.pos_y, self.pos_x))
             dist_goal_to_base = manhattan_dist(i, (self.base_y, self.base_x))
             if dist_to_goal < minimum_dist:
-                if self.fuel_cap > dist_to_goal + dist_goal_to_base:
+                if self.fuel_cap >= dist_to_goal + dist_goal_to_base:
                     minimum_dist = dist_to_goal
                     # TODO - set status?
                     self.route_x = i[1]

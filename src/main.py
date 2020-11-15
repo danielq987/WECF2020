@@ -16,12 +16,12 @@ def get_number_of_bases(m, fuel_cap):
     area_of_effect = (fuel_cap // 2) * 2 - 1
 
     # if area of effect is large in comparison to the map
-    if (area_of_effect / 2 + 1) >= min(rows, cols):
+    if (area_of_effect // 2 + 1) >= min(rows, cols):
         count = 1
         flip = True
         # if cols > rows, flat
         if cols > rows:
-            while count < (cols + 1):
+            while count <= (cols + 1):
                 if flip:
                     base = (0, count)
                     bases_array.append(base)
@@ -35,7 +35,7 @@ def get_number_of_bases(m, fuel_cap):
 
         # if rows > cols, tall
         else:
-            while count < (rows + 1):
+            while count <= (rows + 1):
                 if flip:
                     base = (count, 0)
                     bases_array.append(base)
@@ -49,8 +49,6 @@ def get_number_of_bases(m, fuel_cap):
 
     # if the aoe is small in comparison to the map
     else:
-        remaining_space = min(rows, cols) - area_of_effect 
-        number_of_bases = math.ceil(max(rows, cols)/(area_of_effect/2)) + round(remaining_space/area_of_effect) * (remaining_space >= 0)
         count = 1
         
         # add bases horizontally
@@ -111,7 +109,7 @@ def main():
     Converts file input to ints, and then intiliazes Map and Robots
     """
 
-    case1 = open("C:/Github/WECF2020/test_cases/case1.txt")
+    case1 = open("C:/Github/WECF2020/test_cases/case5.txt")
 
     clean_capacity, fuel_capacity = [int(e) for e in case1.readline().split()]
     # r = Robot(fuel_capacity, clean_capacity)
@@ -139,6 +137,7 @@ def main():
     for i in bases:
         r = Robot(chr(count), fuel_capacity, clean_capacity, i[1], i[0], i[1], i[0], i[1], i[0], "none")
         robot_array.append(r)
+        m.add_robot(i[0], i[1])
         count += 1
 
     done = False
@@ -185,13 +184,26 @@ def main():
                         r.save_resupply()
 
                     else:
+                        m.remove_robot(r.pos_y, r.pos_x)
                         r.pos_x += n_x
                         r.pos_y += n_y
+                        m.add_robot(r.pos_y, r.pos_x)
                         r.fuel_cap -= 1
                         r.save_move()
 
                 # when the robot has been assigned to go to a contamination site
                 elif (r.status == "to_contamination"):
+                    # find next move and move there
+                    n_x, n_y = r.find_next_move(m)
+                    if m.robots[r.pos_y + n_y][r.pos_x + n_x] != 0:
+                        r.save_clean(0)
+                        continue
+                    m.remove_robot(r.pos_y, r.pos_x)
+                    r.pos_x += n_x
+                    r.pos_y += n_y
+                    m.add_robot(r.pos_y, r.pos_x)
+                    r.fuel_cap -= 1
+                    r.save_move()
                     #Check what the next required move is
                     n_x, n_y = r.find_move_vector()
 
@@ -213,20 +225,6 @@ def main():
                             #Since fluid is empty, must return to base
                             r.status = "to_base" 
 
-                    # robot cannot reach the destination as it will run out of fuel
-                    elif(n_x >= r.fuel_cap or n_y >= r.fuel_cap):
-                        # set status to base as its next move
-                        r.status = "to_base"
-                        #TODO: execute move toward base routine
-
-                    #No issues encountered
-                    else:
-                        #find the next move and move there
-                        n_x, n_y = r.find_next_move(m)
-                        r.pos_x += n_x
-                        r.pos_y += n_y
-                        r.fuel_cap -= 1
-                        r.save_move()
                 done = False
             else:
                 #check if robot is done and if past robots are also done

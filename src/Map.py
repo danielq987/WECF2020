@@ -7,7 +7,12 @@ class Map:
     """
     self.rows = len(contamination) + 2
     self.columns = len(contamination[0]) + 2
-
+    self.robots = []
+    for i in range(self.rows):
+      temp = []
+      for j in range(self.columns):
+        temp.append(0)
+      self.robots.append(temp)
     # everything below this line surrounds the 2-D array with a border of 0's for the bases
     tempList = contamination
     tempList.insert(0, [0] * (self.columns - 2))
@@ -19,6 +24,22 @@ class Map:
       tempList[i] = l 
     self.contamination = tempList
   
+  def remove_robot(self, row, col):
+    """
+
+    removes a robot if it exists, at a certain location
+    """
+    self.robots[row][col] = 0
+  
+  def add_robot(self, row, col):
+    """
+    adds a robot at a certain location, it successful returns true, else returns false
+    """
+    if self.robots[row][col] != 0:
+      return False
+    else:
+      self.robots[row][col] = 1
+
   def is_valid_square(self, row, col):
     """
     Determines whether or not a robot can be at a certain location
