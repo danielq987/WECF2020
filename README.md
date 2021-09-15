@@ -1,7 +1,7 @@
 # WECF2020
 WEC F2020 Solutions
 
-The basics of the problem given for Waterloo Engineering Competition was that there exists a team of robots to clean a floor, with each tile having varying dirtiness values. The fuel capacity and cleaning capacity of the robots are given. Each robot must start at the edge of the floor, but the exact position on the edge can be freely determined.
+There exists a team of robots to clean a floor, with each tile having varying dirtiness values. The fuel capacity and cleaning capacity of the robots are given. Each robot must start at the edge of the floor, but the exact position on the edge can be freely determined.
 
 The task was to write a program to ouput a json file including detailed instructions for each step, for each robot.
 
@@ -13,8 +13,9 @@ To set up, we created classes for the floor and the robot, writing appropriate p
 
 Since the robots could only travel in cardinal directions, the maximum coverage area from the edge is in the shape of a right triangle. Depending on the size of this triangle relative to the floor size, different sectioning strategies will be needed.
 
-//todo
-
 ### Pathfinding for each robot
 
-//todo
+In short, each robot would look for the closest uncleaned tile, and move to that tile. It also constantly checked if it had enough fuel to return to its home.
+Below is an example of one of the test cases in action.
+
+![testcase2](https://user-images.githubusercontent.com/67433232/133470494-6744ceff-e26e-4283-9e28-0b2f76fe65cd.gif)
